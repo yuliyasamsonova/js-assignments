@@ -109,11 +109,9 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    if (Math.abs(0.5*(60*date.getUTCHours()-11*date.getUTCMinutes()))>180){
-        console.log((0.5 * (60 * date.getUTCHours() - 11 * date.getUTCMinutes())%180)*Math.PI/ 180);
-        return ((0.5 * (60 * date.getUTCHours() - 11 * date.getUTCMinutes())%180)*Math.PI/ 180);
-    }
-    return (Math.abs(0.5*(60*date.getUTCHours()-11*date.getUTCMinutes())))*Math.PI/ 180;
+    let minute = 360*date.getUTCMinutes()/60;
+    let hours = (360*(date.getUTCHours()%12)/12)+(360*(date.getUTCMinutes()/60)*(1/12));
+    return Math.abs((((hours-minute)%360 > 180 ? ((hours-minute)%360)%180 : (hours-minute)%360)*Math.PI/180));
 }
 
 

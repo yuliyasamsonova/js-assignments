@@ -286,14 +286,13 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-    return arr.filter(function(item, index) {
-       if (index>0) {
-           for (let i = 1; i < index + 1; i++) {
-               return item;
-           }
-       }
-        return item;
+   let res=[];
+    arr.forEach(function(item, index) {
+      for (let i = 0; i < index + 1; i++) {
+         res.push(item);
+      }
     });
+    return res;
 }
 
 
@@ -350,7 +349,16 @@ function getPositivesCount(arr) {
  */
 function sortDigitNamesByNumericOrder(arr) {
     let array=[ 'zero','one','two','three','four','five','six','seven','eight','nine' ];
-
+    return arr.sort(
+        function compare(a, b) {
+        if (a === b) {
+            return 0;
+        }
+        if (array.findIndex((itm)=> itm === a)>array.findIndex((itm) => itm === b)) {
+            return 1;
+        }
+        return -1;
+    })
 }
 
 /** 
@@ -464,17 +472,17 @@ function toStringList(arr) {
 function sortCitiesArray(arr) {
     return arr.sort(function(arg1,arg2){
        if (arg1.country>arg2.country){
-           return arg2.country;
+           return 1;
        }
        else if (arg1.country<arg2.country){
-          return arg1.country;
+          return -1;
        }
        else {
            if (arg1.city>arg2.city){
-               return arg2.country;
+               return 1;
            }
            else if (arg1.city<arg2.city){
-               return arg1.country;
+               return -1;
            }
        }
 
@@ -500,7 +508,11 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]   
  */
 function getIdentityMatrix(n) {
-   throw new Error('Not implemented');
+    return Array(n).fill(0).map(function(elem, i) {
+        return Array(n).fill(0).map(function(elem2, j) {
+            return 1 - Math.min(Math.abs(i-j),1);
+        });
+    });
 }
 
 /**
@@ -574,7 +586,13 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-   throw new Error('Not implemented');
+    let myMap = new Map();
+    array.forEach(function f(elem) {
+       let prevValue=myMap.get(keySelector(elem));
+       myMap.set(keySelector(elem), prevValue ? [...prevValue,valueSelector(elem)] : [valueSelector(elem)]);
+   });
+
+   return myMap;
 }
 
 
