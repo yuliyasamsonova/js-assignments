@@ -26,7 +26,8 @@
  *
  */
 function getComposition(f,g) {
-    throw new Error('Not implemented');
+    let func = (value) => f(g(value));
+    return func;
 }
 
 
