@@ -57,11 +57,9 @@ function getJSON(obj) {
  *
  * @example
  *    var r = fromJSON(Rectangle.prototype, '{"width":10, "height":20}');
- *return JSON.parse(json, proto);
  */
 function fromJSON(proto, json) {
     throw new Error('Not implemented');
-
 }
 
 
