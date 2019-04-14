@@ -38,13 +38,14 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-   let k=1;
-    let arr=[];
-      for (let i=0; i<len; i++){
-          arr[i]=k;
-          k+=2;
-      }
-    return arr;
+    let k=1;
+    let h=Array(len).fill(1);
+    let rez= h.map(function(elem){
+        elem=k;
+        k+=2;
+        return elem;
+    });
+    return rez;
 }
 
 
@@ -241,13 +242,15 @@ function toArrayOfSquares(arr) {
  *   [ 10, -10, 10, -10, 10 ] => [ 10, 0, 10, 0, 10 ]
  *   [ 0, 0, 0, 0, 0]         => [ 0, 0, 0, 0, 0] 
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
- */
+     for (let i=1;i<arr.length;i++){
+    array.push(array[i-1]+arr[i]);
+}*/
 function getMovingSum(arr) {
     let array=[];
-    array[0]=arr[0];
-   for (let i=1;i<arr.length;i++){
-       array.push(array[i-1]+arr[i]);
-   }
+    arr.reduce(function(prevval,currval){
+        array.push(prevval + currval);
+        return prevval + currval;
+    },0);
     return array;
 }
 
@@ -284,15 +287,12 @@ function getSecondItems(arr) {
  *  [ 'a', 'b' ] => [ 'a', 'b','b' ]
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
+ *
  */
 function propagateItemsByPositionIndex(arr) {
-   let res=[];
-    arr.forEach(function(item, index) {
-      for (let i = 0; i < index + 1; i++) {
-         res.push(item);
-      }
-    });
-    return res;
+    return arr.reduce(function(accumulator,currentValue,index) {
+        return [...accumulator,...Array(index + 1).fill(currentValue,0,index+1)];
+    },[]);
 }
 
 
@@ -393,15 +393,13 @@ function getItemsSum(arr) {
  *  [ null, undefined, NaN, false, 0, '' ]  => 6
  */
 function getFalsyValuesCount(arr) {
-   let count=0;
    if (arr.length>0){
-     arr.forEach(function f(arg){
-       if(!arg){
-             count++;
-       }
-    })
+       return arr.filter(function f(arg){
+           return !arg;
+        }).length;
    }
-    return count;
+   else{return 0;}
+
 }
 
 /**
@@ -419,14 +417,9 @@ function getFalsyValuesCount(arr) {
  *    [ true, 0, 1, 'true' ], true => 1
  */
 function findAllOccurences(arr, item) {
-    let count = 0;
-    arr.forEach(function f(arg) {
-        if (arg === item) {
-            count++;
-        }
-        return count;
-    })
-    return count;
+    return arr.filter(function f(arg) {
+        return arg === item;
+    }).length;
 }
 
 /**
@@ -531,13 +524,7 @@ function getIdentityMatrix(n) {
 function getIntervalArray(start, end) {
         let leng = Math.abs(start-end)+1;
         let arr = new Array(leng);
-        for (let i = 0; i < leng; i++)
-        {
-            arr[i] = start;
-            start++
-        }
-        return arr;
-
+        return Array.from({ length: leng }, (v, k) => start+k)
 }
 
 /**
@@ -584,15 +571,16 @@ function distinct(arr) {
  *    "Russia" => ["Omsk", "Samara"], 
  *    "Poland" => ["Lodz"]
  *   }
- */
-function group(array, keySelector, valueSelector) {
-    let myMap = new Map();
-    array.forEach(function f(elem) {
+ *       let myMap = new Map();
+ array.forEach(function f(elem) {
        let prevValue=myMap.get(keySelector(elem));
        myMap.set(keySelector(elem), prevValue ? [...prevValue,valueSelector(elem)] : [valueSelector(elem)]);
    });
 
-   return myMap;
+ return myMap;
+ */
+function group(array, keySelector, valueSelector) {
+    throw new Error('Not implemented');
 }
 
 
