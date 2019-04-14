@@ -571,17 +571,31 @@ function distinct(arr) {
  *    "Russia" => ["Omsk", "Samara"], 
  *    "Poland" => ["Lodz"]
  *   }
- *       let myMap = new Map();
- array.forEach(function f(elem) {
-       let prevValue=myMap.get(keySelector(elem));
-       myMap.set(keySelector(elem), prevValue ? [...prevValue,valueSelector(elem)] : [valueSelector(elem)]);
-   });
-
- return myMap;
+ *let prevValue=myMap.get(keySelector(elem));
+ myMap.set(keySelector(elem), prevValue ? [...prevValue,valueSelector(elem)] : [valueSelector(elem)]);
  */
 function group(array, keySelector, valueSelector) {
-    throw new Error('Not implemented');
+    const obj=array.reduce(function f(acam, elem) {
+        if (!acam[keySelector(elem)]){
+            return {
+                ...acam,
+                [keySelector(elem)]:[valueSelector(elem)]
+            }
+        }
+        return {
+            ...acam,
+            [keySelector(elem)]
+        :
+        [
+            ...acam[keySelector(elem)], valueSelector(elem)
+        ]
+    }
+    }, {});
+    return Object.keys(obj).reduce((map, key) => map.set(key, obj[key]), new Map());
 }
+
+
+
 
 
 /**
